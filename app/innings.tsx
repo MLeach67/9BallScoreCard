@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TextInput, View  } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View  } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState, useEffect } from "react";
 
@@ -34,70 +34,57 @@ const Innings = () => {
     }, [Innings]);
 
   return (
-    <View style={styles.main}>
-        <View style={styles.col1}>
-            <View style={styles.row1}>
-                <Text style={[styles.textInput, styles.text]}>Innings:</Text>
+<View style={styles.main}>
+    <View style={styles.innings}>
+        <ScrollView style={styles.scrollview} automaticallyAdjustKeyboardInsets={true}>
+            <View style={styles.row}>
+                <View style={styles.row}>
+                    <Text style={[styles.textInput, styles.text]}>Innings:</Text>
+                </View>
+                <View style={styles.row}>
+                    <TextInput
+                      style={styles.textInput}
+                      disableFullscreenUI={true}
+                      keyboardType="numeric"
+                      placeholder="Innings"
+                      value={Innings}
+                      onChangeText={setInnings}
+                    />
+                </View>
+
+                <View style={styles.row}>
+                    <Text style={styles.error}>{errors.innings}</Text>
+                </View>
             </View>
-        <View style={styles.row2}>
-            <Pressable
-                style={styles.row2}
-                onPress={handleUpdate}
-                >
-                <Text style={[styles.textInput, styles.text]}>Apply</Text>
-            </Pressable>
-        </View>
-        </View>
-        <View style={styles.col2}>
-            <View style={styles.row1}>
-                  <TextInput
-                    style={styles.textInput}
-                    keyboardType="numeric"
-                    placeholder="Innings"
-                    value={Innings}
-                    onChangeText={setInnings}
-                  />
+          </ScrollView>
+      </View>
+            <View style={styles.row}>
+                <Pressable style={styles.apply} onPress={handleUpdate}>
+                    <Text style={[styles.textInput, styles.text]}>Apply</Text>
+                </Pressable>
+                 <View style={styles.row}></View>
             </View>
-        </View>
-        <View style={styles.col3}>
-          <View style={styles.row1}>
-              <Text style={styles.error}>{errors.innings}</Text>
-          </View>
-        </View>
   </View>
   )
 };
 
 const styles = StyleSheet.create({
     main: {
-        flex:1,
-        flexDirection: 'row',
-        padding: 4,
+        flex: 1,
         backgroundColor: '#003594BF',
         },
-    col1: {
-        flex: 3,
-        padding: 4,
-        flexDirection: 'column',
-        },
-    col2: {
-        flex: 3,
-        padding: 4,
-        flexDirection: 'column',
-        },
-    col3: {
-        flex: 1,
-        padding: 4,
-        flexDirection: 'column',
-        },
-    row1: {
+    innings: {
         flex: 5,
-        flexDirection: 'row',
         },
-    row2: {
+    scrollview: {
+        flex: 1
+        },
+    row: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'flex-end',
+        alignContent: 'space-around',
+        alignItems: 'center',
+        padding: 2
         },
     text: {
         flex: 1,
@@ -110,19 +97,16 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         fontSize: 18,
         height: 40,
-        width: 300,
-        },
-    apply: {
-        flex:1,
-        fontSize: 18,
-        backgroundColor: 'lightblue',
-        padding: 10,
-        borderRadius: 10,
-        width: 400
+        width: 300
         },
     error: {
           fontWeight: 500,
           fontSize: 28,
       },
+      apply: {
+          flex: 2,
+          flexDirection: 'row',
+          alignItems: 'flex-end',
+          },
     });
 export default Innings;

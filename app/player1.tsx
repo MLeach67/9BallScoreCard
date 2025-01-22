@@ -186,12 +186,16 @@ return (
                     </View>
             </View>
 
-
+            <View style={styles.row}>
+                <Pressable style={styles.apply} onPress={handleUpdate}>
+                    <Text style={[styles.textInput, styles.text]}>Apply</Text>
+                </Pressable>
+            <View style={styles.row}></View>
+            </View>
         </ScrollView>
+
     </View>
-        <Pressable style={styles.apply} onPress={handleUpdate}>
-            <Text style={[styles.textInput, styles.text]}>Apply</Text>
-        </Pressable>
+
 </View>
 
   );
@@ -234,7 +238,7 @@ const styles = StyleSheet.create({
           fontSize: 28,
       },
       apply: {
-          flex: 1,
+          flex: 2,
           flexDirection: 'row',
           alignItems: 'center',
           },

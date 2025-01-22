@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TextInput, View  } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View  } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState, useEffect } from "react";
 
@@ -72,186 +72,157 @@ const Player2 = () => {
 
 
 return (
-
 <View style={styles.main}>
-    <View style={styles.col1}>
-        <View style={styles.row}>
-            <Text style={[styles.textInput, styles.text]}>PlayerName:</Text>
-        </View>
+    <View style={styles.player}>
+        <ScrollView
+        style={styles.scrollview}
+        automaticallyAdjustKeyboardInsets={true}
+        >
+            <View style={styles.row}>
+                <Text style={[styles.textInput, styles.text]}>PlayerName:</Text>
+                <View style={styles.row}>
+                    <TextInput
+                      style={styles.textInput}
+                      disableFullscreenUI={true}
+                      placeholder="Player Name"
+                      value={P2Name}
+                      onChangeText={setP2Name}
+                    />
+                </View>
+                <View style={styles.row}></View>
+            </View>
 
-        <View style={styles.row}>
-            <Text style={[styles.textInput, styles.text]}>PlayerSkill:</Text>
-        </View>
+            <View style={styles.row}>
+                    <View style={styles.row}>
+                        <Text style={[styles.textInput, styles.text]}>PlayerSkill:</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <TextInput
+                          style={styles.textInput}
+                          disableFullscreenUI={true}
+                          keyboardType="numeric"
+                          placeholder="Skill"
+                          value={P2Skill}
+                          onChangeText={setP2Skill}
+                        />
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.error}>{errors.skill}</Text>
+                    </View>
+            </View>
+            <View style={styles.row}>
+                    <View style={styles.row}>
+                        <Text style={[styles.textInput, styles.text]}>PlayerGoal:</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <TextInput
+                          style={styles.textInput}
+                          disableFullscreenUI={true}
+                          keyboardType="numeric"
+                          placeholder="Goal"
+                          value={P2Goal}
+                          onChangeText={setP2Goal}
+                        />
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.error}>{errors.goal}</Text>
+                    </View>
+            </View>
 
-        <View style={styles.row}>
-            <Text style={[styles.textInput, styles.text]}>PlayerGoal:</Text>
-        </View>
+            <View style={styles.row}>
+                    <View style={styles.row}>
+                        <Text style={[styles.textInput, styles.text]}>PlayerScore:</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <TextInput
+                          style={styles.textInput}
+                          disableFullscreenUI={true}
+                          keyboardType="numeric"
+                          placeholder="Score"
+                          value={P2Score}
+                          onChangeText={setP2Score}
+                        />
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.error}>{errors.score}</Text>
+                    </View>
+            </View>
 
-        <View style={styles.row}>
-            <Text style={[styles.textInput, styles.text]}>PlayerScore:</Text>
-        </View>
+            <View style={styles.row}>
+                    <View style={styles.row}>
+                        <Text style={[styles.textInput, styles.text]}>PlayerSafeties:</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <TextInput
+                          style={styles.textInput}
+                          disableFullscreenUI={true}
+                          keyboardType="numeric"
+                          placeholder="Safeties"
+                          value={P2Def}
+                          onChangeText={setP2Def}
+                        />
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.error}>{errors.def}</Text>
+                    </View>
+            </View>
 
-        <View style={styles.row}>
-            <Text style={[styles.textInput, styles.text]}>PlayerDef:</Text>
-        </View>
+            <View style={styles.row}>
+                    <View style={styles.row}>
+                        <Text style={[styles.textInput, styles.text]}>PlayerTimeouts:</Text>
+                    </View>
+                    <View style={styles.row}>
+                          <TextInput
+                            style={styles.textInput}
+                            disableFullscreenUI={true}
+                            keyboardType="numeric"
+                            placeholder="Timeouts"
+                            value={P2Timeout}
+                            onChangeText={setP2Timeout}
+                          />
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.error}>{errors.timeout}</Text>
+                    </View>
+            </View>
 
-        <View style={styles.row}>
-            <Text style={[styles.textInput, styles.text]}>PlayerTimeouts:</Text>
-        </View>
-        <View style={styles.row}>
-            <Pressable
-                style={styles.row}
-                onPress={handleUpdate}
-                >
-                <Text style={[styles.textInput, styles.text]}>Apply</Text>
-            </Pressable>
-        </View>
+            <View style={styles.row}>
+                <Pressable style={styles.apply} onPress={handleUpdate}>
+                    <Text style={[styles.textInput, styles.text]}>Apply</Text>
+                </Pressable>
+            <View style={styles.row}></View>
+            </View>
+        </ScrollView>
+
     </View>
-    <View style={styles.col2}>
-        <View style={styles.row}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Player Name"
-              value={P2Name}
-              onChangeText={setP2Name}
-            />
-        </View>
-        <View style={styles.row}>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="numeric"
-              placeholder="Skill"
-              value={P2Skill}
-              onChangeText={setP2Skill}
-            />
-        </View>
-        <View style={styles.row}>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="numeric"
-              placeholder="Goal"
-              value={P2Goal}
-              onChangeText={setP2Goal}
-            />
-        </View>
-        <View style={styles.row}>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="numeric"
-              placeholder="Score"
-              value={P2Score}
-              onChangeText={setP2Score}
-            />
-        </View>
 
-        <View style={styles.row}>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="numeric"
-              placeholder="Safeties"
-              value={P2Def}
-              onChangeText={setP2Def}
-            />
-        </View>
-
-        <View style={styles.row}>
-              <TextInput
-                style={styles.textInput}
-                keyboardType="numeric"
-                placeholder="Timeouts"
-                value={P2Timeout}
-                onChangeText={setP2Timeout}
-              />
-        </View>
-
-        <View style={styles.row}></View>
-
-    </View>
-    <View style={styles.col3}>
-        <View style={styles.row}></View>
-
-        <View style={styles.row}>
-            <Text style={styles.error}>{errors.skill}</Text>
-        </View>
-
-        <View style={styles.row}>
-            <Text style={styles.error}>{errors.goal}</Text>
-        </View>
-
-        <View style={styles.row}>
-            <Text style={styles.error}>{errors.score}</Text>
-        </View>
-
-        <View style={styles.row}>
-            <Text style={styles.error}>{errors.def}</Text>
-        </View>
-
-        <View style={styles.row}>
-            <Text style={styles.error}>{errors.timeout}</Text>
-        </View>
-
-        <View style={styles.row}></View>
-
-    </View>
-
-    <View style={styles.row}>
-
-    </View>
 </View>
+
   );
 };
 
 const styles = StyleSheet.create({
     main: {
         flex: 1,
-        //padding: 4,
-        flexDirection: 'row',
         backgroundColor: '#003594BF',
-        //justifyContent: 'center',
-        //alignItems: 'space-between',
-        //backgroundColor: 'gray'
         },
-    col1: {
-        flex: 3,
-        padding: 4,
-        flexDirection: 'column',
-        //backgroundColor: '#003594BF',
-        //justifyContent: 'center',
-        //alignItems: 'space-between',
-        //backgroundColor: 'blue'
+    player: {
+        flex: 5,
+        backgroundColor: '#003594BF',
         },
-    col2: {
-        flex: 3,
-        padding: 4,
-        flexDirection: 'column',
-        //backgroundColor: '#003594BF',
-        //justifyContent: 'center',
-        //alignItems: 'space-between',
-        //backgroundColor: 'teal',
-        },
-    col3: {
-        flex: 1,
-        padding: 4,
-        flexDirection: 'column',
-        //backgroundColor: '#003594BF',
-        //justifyContent: 'center',
-        //alignItems: 'space-between',
-        //backgroundColor: 'blue',
+    scrollview: {
+        flex: 1
         },
     row: {
         flex: 1,
-        //padding: 2,
         flexDirection: 'row',
-        //justifyContent: 'space-around',
         alignContent: 'space-around',
         alignItems: 'center',
-        //padding: 8,
-        //backgroundColor: 'lightblue',
+        padding: 2
         },
     text: {
         flex: 1,
         backgroundColor: 'skyblue',
-        //height: 40,
         },
     textInput: {
         flex: 1,
@@ -266,6 +237,11 @@ const styles = StyleSheet.create({
           fontWeight: 500,
           fontSize: 28,
       },
+      apply: {
+          flex: 2,
+          flexDirection: 'row',
+          alignItems: 'center',
+          },
     });
 
 

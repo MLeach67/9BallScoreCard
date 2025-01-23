@@ -703,7 +703,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 55,
+        paddingHorizontal: 25,
         },
     skill:{
         flex: 1,

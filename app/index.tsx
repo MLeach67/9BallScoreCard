@@ -534,12 +534,12 @@ const Index = () => {
               <View style={styles.metrics}>
                   <View style={styles.safeties}>
                       <Pressable onPress={() => addP1Def()}>
-                          <Text style={styles.defText}>Safeties: {p1Def}</Text>
+                          <Text style={styles.defText}>Def: {p1Def}</Text>
                       </Pressable>
                   </View>
                   <View style={styles.safeties}>
                       <Pressable onPress={() => useP1TimeOut()}>
-                          <Text style={styles.defText}>TimeOut: {p1Timeout}</Text>
+                          <Text style={styles.defText}>Time: {p1Timeout}</Text>
                       </Pressable>
                   </View>
               </View>
@@ -547,12 +547,12 @@ const Index = () => {
               <View style={styles.metrics}>
                   <View style={styles.safeties}>
                     <Pressable onPress={() => addP2Def()}>
-                        <Text style={styles.defText}>Safeties: {p2Def}</Text>
+                        <Text style={styles.defText}>Def: {p2Def}</Text>
                     </Pressable>
                   </View>
                   <View style={styles.safeties}>
                       <Pressable onPress={() => useP2TimeOut()}>
-                          <Text style={styles.defText}>TimeOut: {p2Timeout}</Text>
+                          <Text style={styles.defText}>Time: {p2Timeout}</Text>
                     </Pressable>
                   </View>
               </View>

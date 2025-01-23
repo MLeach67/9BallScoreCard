@@ -80,7 +80,7 @@ return (
         >
             <View style={styles.row}>
                 <View style={styles.row}>
-                    <Text style={[styles.textInput, styles.text]}>PlayerName:</Text>
+                    <Text style={[styles.textInput, styles.text]}>Name:</Text>
                 </View>
                 <View style={styles.row}>
                     <TextInput
@@ -96,7 +96,7 @@ return (
 
             <View style={styles.row}>
                     <View style={styles.row}>
-                        <Text style={[styles.textInput, styles.text]}>PlayerSkill:</Text>
+                        <Text style={[styles.textInput, styles.text]}>Skill:</Text>
                     </View>
                     <View style={styles.row}>
                         <TextInput
@@ -114,7 +114,7 @@ return (
             </View>
             <View style={styles.row}>
                     <View style={styles.row}>
-                        <Text style={[styles.textInput, styles.text]}>PlayerGoal:</Text>
+                        <Text style={[styles.textInput, styles.text]}>Goal:</Text>
                     </View>
                     <View style={styles.row}>
                         <TextInput
@@ -133,7 +133,7 @@ return (
 
             <View style={styles.row}>
                     <View style={styles.row}>
-                        <Text style={[styles.textInput, styles.text]}>PlayerScore:</Text>
+                        <Text style={[styles.textInput, styles.text]}>Score:</Text>
                     </View>
                     <View style={styles.row}>
                         <TextInput
@@ -152,14 +152,14 @@ return (
 
             <View style={styles.row}>
                     <View style={styles.row}>
-                        <Text style={[styles.textInput, styles.text]}>PlayerSafeties:</Text>
+                        <Text style={[styles.textInput, styles.text]}>Defense:</Text>
                     </View>
                     <View style={styles.row}>
                         <TextInput
                           style={styles.textInput}
                           disableFullscreenUI={true}
                           keyboardType="numeric"
-                          placeholder="Safeties"
+                          placeholder="Defense"
                           value={P2Def}
                           onChangeText={setP2Def}
                         />
@@ -171,7 +171,7 @@ return (
 
             <View style={styles.row}>
                     <View style={styles.row}>
-                        <Text style={[styles.textInput, styles.text]}>PlayerTimeouts:</Text>
+                        <Text style={[styles.textInput, styles.text]}>Timeouts:</Text>
                     </View>
                     <View style={styles.row}>
                           <TextInput

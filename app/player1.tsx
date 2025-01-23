@@ -76,10 +76,11 @@ return (
     <View style={styles.player}>
         <ScrollView
         style={styles.scrollview}
-        automaticallyAdjustKeyboardInsets={true}
         >
             <View style={styles.row}>
-                <Text style={[styles.textInput, styles.text]}>PlayerName:</Text>
+                <View style={styles.row}>
+                    <Text style={[styles.textInput, styles.text]}>PlayerName:</Text>
+                </View>
                 <View style={styles.row}>
                     <TextInput
                       style={styles.textInput}
@@ -193,9 +194,7 @@ return (
             <View style={styles.row}></View>
             </View>
         </ScrollView>
-
     </View>
-
 </View>
 
   );

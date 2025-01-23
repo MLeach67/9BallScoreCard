@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View  } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View  } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState, useEffect } from "react";
 
@@ -36,7 +36,6 @@ const Dead = () => {
   return (
 <View style={styles.main}>
     <View style={styles.dead}>
-        <ScrollView style={styles.scrollview} automaticallyAdjustKeyboardInsets={true}>
             <View style={styles.row}>
                 <View style={styles.row}>
                     <Text style={[styles.textInput, styles.text]}>Dead:</Text>
@@ -56,7 +55,6 @@ const Dead = () => {
                     <Text style={styles.error}>{errors.dead}</Text>
                 </View>
             </View>
-          </ScrollView>
       </View>
             <View style={styles.row}>
                 <Pressable style={styles.apply} onPress={handleUpdate}>
@@ -83,7 +81,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignContent: 'space-around',
-        alignItems: 'center',
         padding: 2
         },
     text: {
@@ -109,5 +106,4 @@ const styles = StyleSheet.create({
           alignItems: 'flex-end',
           },
     });
-
-export default Dead;
+export default Dead

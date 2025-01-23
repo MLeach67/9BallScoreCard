@@ -79,7 +79,9 @@ return (
         automaticallyAdjustKeyboardInsets={true}
         >
             <View style={styles.row}>
-                <Text style={[styles.textInput, styles.text]}>PlayerName:</Text>
+                <View style={styles.row}>
+                    <Text style={[styles.textInput, styles.text]}>PlayerName:</Text>
+                </View>
                 <View style={styles.row}>
                     <TextInput
                       style={styles.textInput}

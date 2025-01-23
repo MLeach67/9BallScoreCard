@@ -776,7 +776,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 40,
         height: 40,
-        width: 200
+        width: 240
         },
     nocolor: {
         backgroundColor: 'none',

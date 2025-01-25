@@ -1,6 +1,6 @@
 import { useLocalSearchParams , useRouter} from "expo-router";
 import { useEffect, useState } from "react";
-import { Button, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, Vibration, View } from "react-native";
 import { useKeepAwake } from 'expo-keep-awake';
 import { getSplit } from './split';
 
@@ -39,6 +39,7 @@ const Index = () => {
 	const [deadList, setDeadList] = useState([]);
     const [inningsLock, setInningsLock] = useState(true);
     const [winLock, setWinLock] = useState(false);
+    const [buzz, setBuzz] = useState('BuzzOff');
 
 	const [split, setSplit] = useState('');
 
@@ -140,6 +141,10 @@ const Index = () => {
           pathname: '/help',
         })
         };
+
+    const toggleBuzz = () => {
+        buzz === 'BuzzOff' ? setBuzz('BuzzOn') : setBuzz('BuzzOff');
+    };
 
     const lockUsedBalls = () => {
   	    if (one !== 'idle') setOne('locked');
@@ -247,6 +252,7 @@ const Index = () => {
         if (num === 7) setSeven(newState);
         if (num === 8) setEight(newState);
         if (num === 9) setNine(newState);
+        if (buzz === 'BuzzOff') Vibration.vibrate(100);
     };
 
   const deadScore = (operation, inc) => {
@@ -269,6 +275,7 @@ const Index = () => {
       if (winLock === false) {
           setNine('used');
           score('add', 2);
+          if (buzz === 'BuzzOff') Vibration.vibrate(100);
       }
     };
 
@@ -594,7 +601,12 @@ const Index = () => {
               </View>
           </View>
           <View style={styles.row5}>
-              <View style={[styles.help, styles.nocolor]}><Text></Text></View>
+              <View style={styles.help}>
+               <Pressable
+                   onPress={toggleBuzz}>
+                   <Text style={{ fontSize: 18}}>{buzz}</Text>
+               </Pressable>
+              </View>
               <View style={styles.button}>
                   <Pressable
                       style={styles.pressable}
@@ -684,7 +696,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'lightblue',
         borderRadius: 40,
         heigh: 40,
-        width: 80,
+        width: 100,
         padding: 8
         },
     player:{

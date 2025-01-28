@@ -19,33 +19,33 @@ const Summary = ({navigation, route}) => {
   return (
     <View style={styles.main}>
         <View style={styles.row}>
-          <Text style={styles.text}>Players:    </Text>
+          <Text style={styles.text}>Players:</Text>
           <Text style={styles.text}>{p1Name}</Text>
           <Text style={styles.text}>{p2Name}</Text>
         </View>
 
         <View style={styles.row}>
-        <Text style={styles.text}>Score:    </Text>
+        <Text style={styles.text}>Score:</Text>
         <Text style={styles.text}>{p1Score}</Text>
         <Text style={styles.text}>{p2Score}</Text>
         </View>
 
         <View style={styles.row}>
-          <Text style={styles.text}>Skill:    </Text>
+          <Text style={styles.text}>Skill:</Text>
           <Text style={styles.text}>{p1Skill}</Text>
           <Text style={styles.text}>{p2Skill}</Text>
         </View>
 
         <View style={styles.row}>
-        <Text style={styles.text}>Goal:   </Text>
-        <Text style={styles.text}>{p1Goal }</Text>
-        <Text style={styles.text}>{p2Goal }</Text>
+        <Text style={styles.text}>Goal:</Text>
+        <Text style={styles.text}>{p1Goal}</Text>
+        <Text style={styles.text}>{p2Goal}</Text>
         </View>
 
         <View style={styles.row} >
-          <Text style={styles.text}>Defense:    </Text>
-          <Text style={styles.text}>{p1Def  }</Text>
-          <Text style={styles.text}>{p2Def  }</Text>
+          <Text style={styles.text}>Defense:</Text>
+          <Text style={styles.text}>{p1Def}</Text>
+          <Text style={styles.text}>{p2Def}</Text>
         </View>
 
         <View style={styles.row} >
@@ -54,13 +54,14 @@ const Summary = ({navigation, route}) => {
           <Text style={styles.text}>Innings: {innings}</Text>
         </View>
 
-
         <View style={styles.row}>
         <Pressable
         onPress={navToIndex}
+        style={styles.row}
         >
             <Text style={styles.text}>Back</Text>
         </Pressable>
+        <View style={styles.row}></View>
         </View>
     </View>
   );
@@ -70,21 +71,28 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
         backgroundColor: '#003594BF',
-        justifyContent: 'center',
         },
     row: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
+        },
+    back: {
+        flex: 1,
+        flexDirection: 'row',
+        //justifyContent: 'flex-end',
+        //margin: 1,
+        //padding: 5,
+        //alignItems: 'center',
         },
     text: {
-        fontSize: 32,
+        flex: 1,
+        //fontSize: 32,
         backgroundColor: 'skyblue',
+        margin: 5,
+        padding: 5,
         borderRadius: 10,
-        fontSize: 24,
-        width: 260,
-        textAlign: 'center'
+        fontSize: 18,
+        textAlign: 'center',
         }
     });
 

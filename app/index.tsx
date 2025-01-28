@@ -35,6 +35,7 @@ const Index = () => {
     const [p2Balls, setP2Balls] = useState([]);
 
 	const [innings, setInnings] = useState(0);
+	const [rackInns, setRackInns] = useState(0);
 	const [dead, setDead] = useState(0);
 	const [deadList, setDeadList] = useState([]);
     const [inningsLock, setInningsLock] = useState(true);
@@ -172,6 +173,7 @@ const Index = () => {
         if (inningsLock === false) {
             lockUsedBalls();
             setInnings(innings + 1);
+            setRackInns(rackInns + 1);
             setInningsLock(true);
             setP1Active(!p1Active);
             setP2Active(!p2Active);
@@ -275,6 +277,7 @@ const Index = () => {
       if (winLock === false) {
           setNine('used');
           score('add', 2);
+          setRackInns(0);
           if (buzz === 'BuzzOff') Vibration.vibrate(100);
       }
     };
@@ -574,11 +577,11 @@ const Index = () => {
           </View>
           <View style={styles.row4}>
               <View style={styles.balllist}>
-                  <Text style={{ fontSize: 18}}>Balls: {p1Balls.join(',')}</Text>
+                  <Text style={{ fontSize: 18}}>BL: {p1Balls.join(',')}</Text>
               </View>
               <View style={styles.deadtotal}>
                   <Pressable onPress={navToDead}>
-                      <Text style={{ fontSize: 18}}>Dead Total:</Text>
+                      <Text style={{ fontSize: 18}}>Dead: </Text>
                   </Pressable>
 
                   <Pressable onPress={navToDead}>
@@ -588,16 +591,22 @@ const Index = () => {
               <View style={styles.dead}>
                   <Text style={{ fontSize: 18}}>Dead: {deadList.join(',')}</Text>
               </View>
+
+              <View style={styles.dead}>
+                <Text style={{ fontSize: 18}}>R-Inn: {rackInns}</Text>
+              </View>
+
               <View style={styles.deadtotal}>
                   <Pressable onPress={navToInnings}>
-                      <Text style={{ fontSize: 18}}>Innings: </Text>
+                      <Text style={{ fontSize: 18}}>T-Inn: </Text>
                   </Pressable>
                   <Pressable onPress={navToInnings}>
                 <Text style={{ fontSize: 18}}>{innings}</Text>
             	</Pressable>
               </View>
+
               <View style={styles.balllist}>
-                  <Text style={{ fontSize: 18}}>Balls: {p2Balls.join(',')}</Text>
+                  <Text style={{ fontSize: 18}}>BL: {p2Balls.join(',')}</Text>
               </View>
           </View>
           <View style={styles.row5}>

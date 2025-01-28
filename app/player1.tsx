@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
         backgroundColor: '#003594BF',
+        //justifyContent: 'center',
         },
     player: {
         flex: 5,
@@ -215,33 +216,33 @@ const styles = StyleSheet.create({
     row: {
         flex: 1,
         flexDirection: 'row',
-        alignContent: 'space-around',
-        alignItems: 'center',
-        padding: 2
         },
     text: {
         flex: 1,
         backgroundColor: 'skyblue',
+        padding: 5,
         },
     textInput: {
         flex: 1,
         textAlign: 'center',
         backgroundColor: 'lightblue',
+        alignContent: 'center',
+        margin: 2,
         borderRadius: 10,
         fontSize: 18,
         height: 40,
-        width: 300
         },
     error: {
-          fontWeight: 500,
-          fontSize: 28,
+        flex: 1,
+        fontWeight: 500,
+        fontSize: 24,
       },
-      apply: {
-          flex: 2,
-          flexDirection: 'row',
-          alignItems: 'center',
-          },
-    });
+    apply: {
+        flex: 2,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+});
 
 
 export default Player1;

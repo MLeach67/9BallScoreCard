@@ -3,6 +3,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState, useEffect } from "react";
 
 const Player1 = () => {
+    /*
     const skillLevels = {
         1: '14',
         2: '19',
@@ -14,6 +15,7 @@ const Player1 = () => {
         8: '65',
         9: '75'
         };
+    */
 
   const router = useRouter();
   const params = useLocalSearchParams();
@@ -58,18 +60,19 @@ const Player1 = () => {
       validateForm();
     }, [P1Goal, P1Score, P1Def, P1Timeout]);
 
-  useEffect(() => {
+ /*
+    useEffect(() => {
       if (P1Skill) {
           validateForm();
           let skill = parseInt(P1Skill);
           let score = parseInt(P1Score);
-          setP1Goal(skillLevels[skill]);
+          let goal = parseInt(P1Goal);
           if (score === 0 ) {
             (skill < 4) ? setP1Timeout('2') : setP1Timeout('1');
           }
           }
     }, [P1Skill]);
-
+*/
 
 return (
 <View style={styles.main}>

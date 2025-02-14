@@ -177,6 +177,7 @@ const Index = () => {
             setInningsLock(true);
             setP1Active(!p1Active);
             setP2Active(!p2Active);
+            if (buzz === 'BuzzOff') Vibration.vibrate(100);
         }
     };
 
@@ -186,6 +187,7 @@ const Index = () => {
             setP1Active(!p1Active);
             setP2Active(!p2Active);
             setInningsLock(false);
+            if (buzz === 'BuzzOff') Vibration.vibrate(100);
         }
     };
 

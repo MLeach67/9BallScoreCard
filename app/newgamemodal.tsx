@@ -6,18 +6,18 @@ import { Pressable, Modal, StyleSheet, ScrollView, Text, View } from 'react-nati
 	<Modal
             animationType="slide"
             transparent={true}
-            visible={props.newRackModalVisible}
+            visible={props.newGameModalVisible}
 
     >
     <View style={styles.main}>
         <View style={styles.row}>
-            <Text style={styles.modalText}>Confirm new rack?</Text>
+            <Text style={styles.modalText}>Confirm new game?</Text>
         </View>
 
         <View style={styles.row}>
             <Pressable
               style={[styles.button, styles.row]}
-                 onPress={props.startNextRack}>
+                 onPress={props.startNewGame}>
               <Text style={styles.textStyle}>Yes</Text>
             </Pressable>
 

@@ -4,6 +4,8 @@ import { Button, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableO
 import { useKeepAwake } from 'expo-keep-awake';
 import { getSplit } from './split';
 import WinModal from './winmodal';
+import NewRackModal from './newrackmodal';
+import NewGameModal from './newgamemodal';
 
 const Index = () => {
     const router = useRouter();
@@ -42,6 +44,8 @@ const Index = () => {
     const [inningsLock, setInningsLock] = useState(true);
     const [winLock, setWinLock] = useState(false);
     const [winModalVisible, setWinModalVisible] = useState(false);
+    const [newRackModalVisible, setNewRackModalVisible] = useState(false);
+    const [newGameModalVisible, setNewGameModalVisible] = useState(false);
     const [buzz, setBuzz] = useState('BuzzOff');
 
 	const [split, setSplit] = useState('');
@@ -144,6 +148,18 @@ const Index = () => {
           pathname: '/help',
         })
         };
+
+	const closeNewGameModal = () => {
+        setNewGameModalVisible(!newGameModalVisible);
+	};
+
+	const closeNewRackModal = () => {
+        if (nine === 'used') {
+            score('sub', 2);
+            setNine('idle')
+            }
+        setNewRackModalVisible(!newRackModalVisible);
+	};
 
 	const closeWinModal = () => {
         if (nine === 'used') {
@@ -300,6 +316,19 @@ const Index = () => {
           setDead(dead => dead + idleBalls);
         }};
 
+    const confirmNewGame = () => {
+        setNewGameModalVisible(!newGameModalVisible);
+        }
+
+    const startNextRack = () => {
+        setNewRackModalVisible(!newRackModalVisible);
+        checkForDeadBalls();
+        resetBallStates();
+        ballList('reset', null);
+        setRackInns(0);
+        resetTimeouts();
+        }
+
     const endGame = () => {
         setWinModalVisible(!winModalVisible);
         checkForDeadBalls();
@@ -320,16 +349,13 @@ const Index = () => {
             setWinModalVisible(!winModalVisible);
        } else {
            if (nine === 'used') {
-               checkForDeadBalls();
-               resetBallStates();
-               ballList('reset', null);
-               setRackInns(0);
-               resetTimeouts();
+               setNewRackModalVisible(!newRackModalVisible);
            }
        }
   };
 
    const appReset = () => {
+    setNewGameModalVisible(!newGameModalVisible);
     setP1Name('Player1');
     setP1Skill('1');
 	setP1Goal(14);
@@ -640,7 +666,7 @@ const Index = () => {
               <View style={styles.button}>
                   <Pressable
                       style={styles.pressable}
-                      onPress={appReset}>
+                      onPress={confirmNewGame}>
                       <Text style={{ fontSize: 18}}>NewGame</Text>
                   </Pressable>
               </View>
@@ -660,10 +686,18 @@ const Index = () => {
           </View>
           <WinModal
               winModalVisible = {winModalVisible}
-              nine={nine}
-              endGame9ball={()=>endGame9Ball()}
               endGame={() => endGame()}
               onClose={() => closeWinModal()}
+          />
+          <NewRackModal
+              newRackModalVisible = {newRackModalVisible}
+              startNextRack={() => startNextRack()}
+              onClose={() => closeNewRackModal()}
+          />
+          <NewGameModal
+              newGameModalVisible = {newGameModalVisible}
+              startNewGame={() => appReset()}
+              onClose={() => closeNewGameModal()}
           />
       </View>
     );

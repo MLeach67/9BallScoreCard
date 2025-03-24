@@ -1,8 +1,9 @@
 import { useLocalSearchParams , useRouter} from "expo-router";
 import { useEffect, useState } from "react";
-import { Button, ImageBackground, Pressable, StyleSheet, Text, TouchableOpacity, Vibration, View } from "react-native";
+import { Button, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, Vibration, View } from "react-native";
 import { useKeepAwake } from 'expo-keep-awake';
 import { getSplit } from './split';
+import WinModal from './winmodal';
 
 const Index = () => {
     const router = useRouter();
@@ -40,6 +41,7 @@ const Index = () => {
 	const [deadList, setDeadList] = useState([]);
     const [inningsLock, setInningsLock] = useState(true);
     const [winLock, setWinLock] = useState(false);
+    const [winModalVisible, setWinModalVisible] = useState(false);
     const [buzz, setBuzz] = useState('BuzzOff');
 
 	const [split, setSplit] = useState('');
@@ -143,6 +145,14 @@ const Index = () => {
         })
         };
 
+	const closeWinModal = () => {
+        if (nine === 'used') {
+            score('sub', 2);
+            setNine('idle')
+            }
+        setWinModalVisible(!winModalVisible);
+	};
+
     const toggleBuzz = () => {
         buzz === 'BuzzOff' ? setBuzz('BuzzOn') : setBuzz('BuzzOff');
     };
@@ -167,6 +177,7 @@ const Index = () => {
         setSix('locked');
         setSeven('locked');
         setEight('locked');
+        setNine('locked');
     };
 
     const toggleP1Active = () => {
@@ -276,11 +287,9 @@ const Index = () => {
   };
 
   const nineSpecial = () => {
-      if (winLock === false) {
-          setNine('used');
-          score('add', 2);
-          setRackInns(0);
-          if (buzz === 'BuzzOff') Vibration.vibrate(100);
+      if (nine != 'locked') {
+        setNine('used');
+        score('add', 2);
       }
     };
 
@@ -291,23 +300,33 @@ const Index = () => {
           setDead(dead => dead + idleBalls);
         }};
 
-  const checkForWin = () => {
-        if (p1Score >= p1Goal) setSplit(getSplit(p2Skill, p2Score))
+    const endGame = () => {
+        setWinModalVisible(!winModalVisible);
+        checkForDeadBalls();
+        lockAllBalls();
+        setInningsLock(null);
+        setWinLock(!winLock);
+        }
+
+    const checkForWin = () => {
+        if (p1Score >= p1Goal) {
+            setSplit(getSplit(p2Skill, p2Score));
+        }
         if (p2Score >= p2Goal) {
             let splitStr = (getSplit(p1Skill, p1Score));
             setSplit(splitStr.split("-").reverse().join("-"));
         }
         if (p1Score >= p1Goal || p2Score >= p2Goal) {
-            checkForDeadBalls();
-            lockAllBalls();
-            setWinLock(true);
-        }
-    if (nine === 'used') {
-            checkForDeadBalls();
-            resetBallStates();
-        	ballList('reset', null);
-        	resetTimeouts();
-        }
+            setWinModalVisible(!winModalVisible);
+       } else {
+           if (nine === 'used') {
+               checkForDeadBalls();
+               resetBallStates();
+               ballList('reset', null);
+               setRackInns(0);
+               resetTimeouts();
+           }
+       }
   };
 
    const appReset = () => {
@@ -639,7 +658,13 @@ const Index = () => {
                </Pressable>
               </View>
           </View>
-
+          <WinModal
+              winModalVisible = {winModalVisible}
+              nine={nine}
+              endGame9ball={()=>endGame9Ball()}
+              endGame={() => endGame()}
+              onClose={() => closeWinModal()}
+          />
       </View>
     );
 };

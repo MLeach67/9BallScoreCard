@@ -2,12 +2,41 @@ import { useLocalSearchParams , useRouter} from "expo-router";
 import { useEffect, useState } from "react";
 import { Button, ImageBackground, Modal, Pressable, StyleSheet, Text, TouchableOpacity, Vibration, View } from "react-native";
 import { useKeepAwake } from 'expo-keep-awake';
+import { useAudioPlayer } from 'expo-audio';
 import { getSplit } from './split';
 import WinModal from './winmodal';
 import NewRackModal from './newrackmodal';
 import NewGameModal from './newgamemodal';
+import { useSQLiteContext, SQLiteDatabase } from "expo-sqlite";
+
+
+let timerList = [];
+const audioSource = require('../assets/tone.mp3');
+const audioSourceEnd = require('../assets/toneEnd.mp3');
+
+
 
 const Index = () => {
+    const database = useSQLiteContext();
+
+    const updatedata = async () => {
+        //await db.runAsync('UPDATE test SET intValue = ? WHERE value = ?', [999, 'aaa']);
+        await database.runAsync("UPDATE scorenine SET p1Score = p1Score + 1 WHERE game = ?", [gameid]);
+        const blah = await database.getFirstAsync("SELECT p1Score FROM scorenine WHERE game = ?;", [gameid]);
+        setP1Score(blah.p1Score);
+    };
+
+    const loaddata = async () => {
+        const firstRow = await database.getFirstAsync('SELECT * FROM scorenine ORDER BY rowid DESC LIMIT 1');
+        //get gameid to use for sql update fields etc
+        //will it survive a restart?
+        setGameId(firstRow.game);
+        setP1Name(firstRow.p1Name);
+        setP1Score(firstRow.p1Score);
+        setP2Name(firstRow.p2Name);
+        setP2Score(firstRow.p2Score);
+    };
+
     const router = useRouter();
     const [oneBg, setOneBg] = useState(require('../assets/images/1Ball.png'));
     const [twoBg, setTwoBg] = useState(require('../assets/images/2Ball.png'));
@@ -19,12 +48,13 @@ const Index = () => {
     const [eightBg, setEightBg] = useState(require('../assets/images/8Ball.png'));
     const [nineBg, setNineBg] = useState(require('../assets/images/9Ball.png'));
 
-    const [p1Name, setP1Name] = useState('Player1');
+    const [p1Name, setP1Name] = useState('');
     const [p1Skill, setP1Skill] = useState('1');
     const [p1Goal, setP1Goal] = useState(14);
     const [p1Score, setP1Score] = useState(0);
     const [p1Def, setP1Def] = useState(0);
     const [p1Timeout, setP1Timeout] = useState(2);
+    const [p1Shotclock, setP1Shotclock] = useState(0);
 	const [p1Active, setP1Active] = useState(true);
     const [p1Balls, setP1Balls] = useState([]);
 
@@ -34,9 +64,11 @@ const Index = () => {
     const [p2Score, setP2Score] = useState(0);
     const [p2Def, setP2Def] = useState(0);
     const [p2Timeout, setP2Timeout] = useState('2');
+    const [p2Shotclock, setP2Shotclock] = useState(0);
 	const [p2Active, setP2Active] = useState(false);
     const [p2Balls, setP2Balls] = useState([]);
 
+    const [gameid, setGameId] = useState(0);
 	const [innings, setInnings] = useState(0);
 	const [rackInns, setRackInns] = useState(0);
 	const [dead, setDead] = useState(0);
@@ -46,6 +78,9 @@ const Index = () => {
     const [winModalVisible, setWinModalVisible] = useState(false);
     const [newRackModalVisible, setNewRackModalVisible] = useState(false);
     const [newGameModalVisible, setNewGameModalVisible] = useState(false);
+
+    const player = useAudioPlayer(audioSource);
+    const playerEnd = useAudioPlayer(audioSourceEnd);
     const [buzz, setBuzz] = useState('BuzzOff');
 
 	const [split, setSplit] = useState('');
@@ -68,16 +103,18 @@ const Index = () => {
         P1Score,
         P1Def,
         P1Timeout,
+        P1Shotclock,
         P2Name,
         P2Skill,
         P2Goal,
         P2Score,
         P2Def,
         P2Timeout,
+        P2Shotclock,
         Innings,
         Dead
         } = useLocalSearchParams();
-
+    
     useKeepAwake();
 
     const navToPlayer1 = () => {
@@ -89,8 +126,9 @@ const Index = () => {
               p1Goal: p1Goal,
               p1Score: p1Score,
               p1Def: p1Def,
-              p1Timeout: p1Timeout
-          }})
+              p1Timeout: p1Timeout,
+              p1Shotclock: p1Shotclock
+          }});
         };
 
     const navToPlayer2 = () => {
@@ -102,7 +140,8 @@ const Index = () => {
               p2Goal: p2Goal,
               p2Score: p2Score,
               p2Def: p2Def,
-              p2Timeout: p2Timeout
+              p2Timeout: p2Timeout,
+              p2Shotclock: p2Shotclock
           }})
         };
 
@@ -147,7 +186,7 @@ const Index = () => {
         router.push({
           pathname: '/help',
         })
-        };
+    };
 
 	const closeNewGameModal = () => {
         setNewGameModalVisible(!newGameModalVisible);
@@ -168,6 +207,36 @@ const Index = () => {
             }
         setWinModalVisible(!winModalVisible);
 	};
+
+    const shotClock = (count) => {
+        if (count > 0) {
+            timerList.forEach(number => clearInterval(number));
+            let timer = setInterval(function() {
+                count--;
+                if (count === 0) {
+                    //Wasn't making noise on first load so do-while here
+                    do {
+                        playerEnd.play();
+                        playerEnd.seekTo(0);
+                         } while (playerEnd.isLoaded);
+                    clearInterval(timer);
+                } else if (count === 10) {
+                    do {
+                        player.play();
+                        player.seekTo(0);
+                        } while (player.isLoaded);
+                } else if (count <= 5) {
+                    do {
+                        player.play();
+                        player.seekTo(0);
+                        } while (player.isLoaded);
+                }
+                }, 1000);
+                timerList.push(timer);
+        } else {
+            timerList.forEach(number => clearInterval(number));
+        }
+    };
 
     const toggleBuzz = () => {
         buzz === 'BuzzOff' ? setBuzz('BuzzOn') : setBuzz('BuzzOff');
@@ -204,6 +273,7 @@ const Index = () => {
             setInningsLock(true);
             setP1Active(!p1Active);
             setP2Active(!p2Active);
+            shotClock(p1Shotclock);
             if (buzz === 'BuzzOff') Vibration.vibrate(100);
         }
     };
@@ -213,6 +283,7 @@ const Index = () => {
             lockUsedBalls();
             setP1Active(!p1Active);
             setP2Active(!p2Active);
+            shotClock(p2Shotclock);
             setInningsLock(false);
             if (buzz === 'BuzzOff') Vibration.vibrate(100);
         }
@@ -242,7 +313,7 @@ const Index = () => {
   };
 
   const score = (operation, inc) => {
-        if (operation === 'add') p1Active ? setP1Score(p1Score + inc) : setP2Score(p2Score + inc)
+        if (operation === 'add') p1Active ? updatedata() : setP2Score(p2Score + inc)
         if (operation === 'sub') p1Active ? setP1Score(p1Score - inc) : setP2Score(p2Score - inc)
     };
 
@@ -327,6 +398,7 @@ const Index = () => {
         ballList('reset', null);
         setRackInns(0);
         resetTimeouts();
+        timerList.forEach(number => clearInterval(number));
         }
 
     const endGame = () => {
@@ -335,6 +407,7 @@ const Index = () => {
         lockAllBalls();
         setInningsLock(null);
         setWinLock(!winLock);
+        timerList.forEach(number => clearInterval(number));
         }
 
     const checkForWin = () => {
@@ -363,6 +436,7 @@ const Index = () => {
 	setP1Score(0);
 	setP1Def(0);
     setP1Timeout(2);
+    setP1Shotclock(0);
 
     setP2Name('Player2');
     setP2Skill('1');
@@ -371,6 +445,8 @@ const Index = () => {
     setP2Active(false);
     setP2Def(0);
     setP2Timeout(2);
+    setP2Shotclock(0);
+    timerList.forEach(number => clearInterval(number));
 
     ballList('reset', null);
 
@@ -428,7 +504,15 @@ const Index = () => {
             changeBallState(num, 'idle');
             deadScore('sub', 1);
         }
+        p1Active ? shotClock(p1Shotclock) : shotClock(p2Shotclock);
     };
+
+    useEffect(() => {
+        //Firsttime Load Data from sql
+        loaddata();
+        //updatedata();
+        }, []);
+        
 
     useEffect(() => {
         if (winLock) navToSummary();
@@ -439,7 +523,7 @@ const Index = () => {
         },[p1Score, p2Score]);
 
     useEffect(() => {
-              changeBallImage();
+        changeBallImage();
         }, [one,two,three,four,five,six,seven,eight]);
 
     useEffect(() => {
@@ -449,12 +533,14 @@ const Index = () => {
         if (P1Score) setP1Score(parseInt(P1Score));
         if (P1Def) setP1Def(parseInt(P1Def));
         if (P1Timeout) setP1Timeout(parseInt(P1Timeout));
+        if (P1Shotclock) setP1Shotclock(parseInt(P1Shotclock));
         if (P2Name) setP2Name(P2Name);
         if (P2Skill) setP2Skill(P2Skill);
         if (P2Goal) setP2Goal(P2Goal);
         if (P2Score) setP2Score(parseInt(P2Score));
         if (P2Def) setP2Def(parseInt(P2Def));
         if (P2Timeout) setP2Timeout(parseInt(P2Timeout));
+        if (P2Shotclock) setP2Shotclock(parseInt(P2Shotclock));
         if (Innings) setInnings(parseInt(Innings));
         if (Dead) setDead(parseInt(Dead));
     }, [
@@ -464,12 +550,14 @@ const Index = () => {
         P1Score,
         P1Def,
         P1Timeout,
+        P1Shotclock,
         P2Name,
         P2Skill,
         P2Goal,
         P2Score,
         P2Def,
         P2Timeout,
+        P2Shotclock,
         Innings,
         Dead,
     ]);

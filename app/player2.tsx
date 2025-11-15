@@ -17,13 +17,14 @@ const Player2 = () => {
 
   const router = useRouter();
   const params = useLocalSearchParams();
-  const { p2Name, p2Skill, p2Goal, p2Score, p2Def, p2Timeout } = params;
+  const { p2Name, p2Skill, p2Goal, p2Score, p2Def, p2Timeout, p2Shotclock } = params;
   const [P2Name, setP2Name] = useState(p2Name);
   const [P2Skill, setP2Skill] = useState(p2Skill);
   const [P2Goal, setP2Goal] = useState(p2Goal);
   const [P2Score, setP2Score] = useState(p2Score);
   const [P2Def, setP2Def] = useState(p2Def);
   const [P2Timeout, setP2Timeout] = useState(p2Timeout);
+  const [P2Shotclock, setP2Shotclock] = useState(p2Shotclock);
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -34,6 +35,7 @@ const Player2 = () => {
         if (!/^(?:[0-9]|[1-9][0-9])$/.test(P2Score)) errors.score = '0-99';
         if (!/^(?:[0-9]|[1-9][0-9])$/.test(P2Def)) errors.def = '0-99';
         if (!/^[0-9]$/.test(P2Timeout)) errors.timeout = '0-9';
+        if (!/^(?:[0-9]|[1-9][0-9])$/.test(P2Shotclock)) errors.shotclock = '0-99';
         setErrors(errors);
         setIsFormValid(Object.keys(errors).length === 0);
     };
@@ -49,6 +51,7 @@ const Player2 = () => {
                   P2Score: P2Score,
                   P2Def: P2Def,
                   P2Timeout: P2Timeout,
+                  P2Shotclock: P2Shotclock
               },
           });
       }
@@ -56,7 +59,7 @@ const Player2 = () => {
 
   useEffect(() => {
       validateForm();
-    }, [P2Goal, P2Score, P2Def, P2Timeout]);
+    }, [P2Goal, P2Score, P2Def, P2Timeout, P2Shotclock]);
 
   useEffect(() => {
       if (P2Skill) {
@@ -185,6 +188,25 @@ return (
                     </View>
                     <View style={styles.row}>
                         <Text style={styles.error}>{errors.timeout}</Text>
+                    </View>
+            </View>
+
+            <View style={styles.row}>
+                    <View style={styles.row}>
+                        <Text style={[styles.textInput, styles.text]}>Shot Clock:</Text>
+                    </View>
+                    <View style={styles.row}>
+                          <TextInput
+                            style={styles.textInput}
+                            disableFullscreenUI={true}
+                            keyboardType="numeric"
+                            placeholder="Shot Clock"
+                            value={P2Shotclock}
+                            onChangeText={setP2Shotclock}
+                          />
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.error}>{errors.shotclock}</Text>
                     </View>
             </View>
 
